@@ -8,11 +8,13 @@ from sqlalchemy.pool import StaticPool
 from api.main import app, get_db
 from api.database import Base 
 
+# Define an in-memory SQLite database for testing
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
 
-# Create 
+# Create the SQLAlchemy engine for the test database 
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}, poolclass=StaticPool)
 
+# Create a session factory for generating database sessions
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 @pytest.fixture(scope="function", autouse=True)

@@ -1,6 +1,7 @@
 import numpy as np
 from pipeline.audio_processor import process_audio_and_extract_mfcc
 from engine.model import DenseNeuralNetwork
+import matplotlib.pyplot as plt
 
 def train_val_split(X, Y, split_ratio=0.8, seed=42):
     ''' Shuffles dataset columns and splits into Train and Validation sets '''
@@ -40,11 +41,10 @@ def main():
     # Define Model Architecture
     layers = [input_dim, 32, 16, num_classes]
     
-    # Instantiate Model
     model = DenseNeuralNetwork(layers)
     
-    # Train Model
-    model.fit_optimized(
+    # Train Model and return loss history
+    loss_history = model.fit(
         X_train, 
         Y_train, 
         epochs=600, 
@@ -54,7 +54,6 @@ def main():
         lambd=0.05
     )
     
-    # Predict the labels of the training set
     train_preds = model.predict(X_train)
     
     # Convert one-hot encoded labels to class indices
@@ -75,8 +74,21 @@ def main():
     print(f"Train Accuracy: {train_acc:.2f}%")
     print(f"Val Accuracy:   {val_acc:.2f}%")
     
+    # Plot model loss history
+    plt.figure(figsize=(8, 5))
+    plt.plot(loss_history, label="Training Loss", color="#1f77b4", linewidth=2) 
+    
+    plt.title("Model Learning Curve (Optimized Model)")
+    plt.xlabel("Epochs")
+    plt.ylabel("Loss")
+
+    plt.grid(True, linestyle="--", alpha=0.7)
+    plt.legend()
+
+    plt.show()
+    
     # Save Trained Parameters to Disk
-    np.savez("trained_model_params.npz", **model.parameters)
+    np.savez("artifacts/trained_model_params.npz", **model.parameters)
 
 if __name__ == "__main__":
     main()

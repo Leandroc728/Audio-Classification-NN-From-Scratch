@@ -13,25 +13,30 @@ class DenseNeuralNetwork:
     def fit(self, X, Y, epochs=500, learning_rate=0.01):
         ''' Standard training loop '''
         
+        history = []
+        
         for epoch in range(1, epochs + 1):
-            # Forward pass
             AL, caches = forward_propagation(X, self.parameters, self.layers)
             
-            # Loss computation
             loss = compute_loss(Y, AL)
             
-            # Backward pass
+            # Keeps track of the loss
+            history.append(loss)
+            
             grads = backward_propagation(Y, caches, self.parameters, self.layers)
             
-            # Update parameters
             self.parameters = update_parameters(self.parameters, grads, self.layers, learning_rate)
             
             if epoch % 100 == 0:
                 print(f"Epoch {epoch}\nLoss: {loss:.4f}\nLR: {learning_rate:.6f}")
+            
+        return history
                 
     def fit_optimized(self, X, Y, epochs=500, eta_0=0.01, keep_prob=0.8, decay_rate=0.005, lambd=0.01):
         ''' Optimized training loop using Adam, Dropout, LR Decay and L2 Regularization '''
         
+        history = []
+
         # Gets the number of examples and initializes adam vectors
         m_samples = X.shape[1]
         m_adam, v_adam = initialize_adam(self.parameters, self.layers)
@@ -43,12 +48,16 @@ class DenseNeuralNetwork:
             
             loss = compute_loss(Y, AL, parameters=self.parameters, lambd=lambd)
             
+            history.append(loss)
+            
             grads = backward_propagation_with_dropout(Y, caches, self.parameters, self.layers, keep_prob=keep_prob)
             
             self.parameters, m_adam, v_adam = update_parameters_adam(self.parameters, grads, m_adam, v_adam, t=epoch, layers=self.layers, eta=eta, lambd=lambd, m=m_samples)
             
             if epoch % 100 == 0:
                 print(f"Epoch {epoch}\nLoss: {loss:.4f}\n LR: {eta:.6f}")
+        
+        return history
                 
     def predict(self, X):
         ''' Prediction function '''

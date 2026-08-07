@@ -20,7 +20,7 @@ from engine.layers import forward_propagation_with_dropout
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Model parameters and scaler paths
-MODEL_PATH = BASE_DIR / "trained_model_params.npz"
+MODEL_PATH = BASE_DIR / "artifacts" / "trained_model_params.npz"
 SCALER_PATH = BASE_DIR / "artifacts" / "scaler.npz"
 
 MODEL_VERSION = "v1.0.0"
