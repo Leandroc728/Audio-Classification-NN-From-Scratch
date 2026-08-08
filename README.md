@@ -186,7 +186,7 @@ python train.py
 {
   "filename": "vento_forte.wav",
   "prediction": "wind",
-  "confidence": "96.40%",
+  "confidence": "96.00%",
   "latency_ms": 12.35,
   "probabilities_pct": {
     "wind": 96.00,
