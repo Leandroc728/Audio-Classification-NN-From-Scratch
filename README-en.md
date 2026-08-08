@@ -77,6 +77,8 @@ To run this project on your machine, you need:
 
 The `docker-compose.yml` will simultaneously spin up the PostgreSQL database and the FastAPI application.
 
+*Be sure that Docker Desktop is open and running*
+
 **1. Set Environment Variables**
 
 Create a `.env` file at the project root (use `.env.example` as a base) with your database credentials:
