@@ -73,35 +73,74 @@ To run this project on your machine, you need:
 
 ---
 
-## Getting Started
+## How to Run
 
-The `docker-compose.yml` will simultaneously spin up the PostgreSQL database and the FastAPI application.
+### Via Docker (Recommended)
 
-*Be sure that Docker Desktop is open and running.*
+The `docker-compose.yml` will launch the PostgreSQL database and the FastAPI API simultaneously.
 
-**1. Set Environment Variables**
+> **Note:** Make sure **Docker Desktop** is open and running before executing the commands.
 
-Create a `.env` file at the project root (use `.env.example` as a base) with your database credentials:
+**1. Configure Environment Variables**
+
+Create a `.env` file in the project root (use `.env.example` as a template) with the database credentials:
 
 ```env
 POSTGRES_USER=audio_admin
 POSTGRES_PASSWORD=secure_password_98765
 POSTGRES_DB=audio_classifier_db
-DATABASE_URL=postgresql://audio_admin:secure_password_98765@postgres-db:5432/audio_classifier_db
+DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
 ```
 
-**2. Start the Application**
+**2. Launch the Application**
 
-In your terminal, run:
+In the terminal, run:
 
 ```bash
-docker compose up -d --build
+docker-compose up -d --build
 ```
 
 **3. Access the API**
 
 - **Swagger UI Documentation:** [http://localhost:8080/docs](http://localhost:8080/docs)
-- The API will automatically try to load the model weights (`trained_model_params.npz`). If the file doesn't exist, you'll need to run the training script first.
+- The API will automatically attempt to load the saved model weights located in `artifacts/trained_model_params.npz`. If the file does not exist, run the training script first.
+
+---
+
+### Local Execution (Development Environment)
+
+If you want to run the project directly on your local machine without Docker:
+
+**1. Create and activate the virtual environment:**
+
+```bash
+# Linux / macOS
+python -m venv venv
+source venv/bin/activate
+
+# Windows (PowerShell)
+python -m venv venv
+.\venv\Scripts\activate
+```
+
+**2. Install development dependencies:**
+
+```bash
+pip install -r requirements/dev.txt
+```
+
+**3. Start the development server with Uvicorn:**
+
+```bash
+uvicorn api.main:app --reload --port 8080
+```
+
+---
+
+**4. Access the API:**
+
+- **Swagger UI Documentation:** [http://localhost:8080/docs](http://localhost:8080/docs)
+- The API will automatically attempt to load the saved model weights located in `artifacts/trained_model_params.npz`. If the file does not exist, run the training script first.
 
 ---
 
