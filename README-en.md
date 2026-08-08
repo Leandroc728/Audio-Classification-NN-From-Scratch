@@ -185,14 +185,16 @@ python train.py
 
 ```json
 {
-  "filename": "strong_wind.wav",
+  "filename": "vento_forte.wav",
   "prediction": "wind",
   "confidence": "96.40%",
   "latency_ms": 12.35,
   "probabilities_pct": {
-    "wind": 96.40,
-    "crow": 2.15,
-    "engine": 1.45
+    "wind": 96.00,
+    "crow": 1.50,
+    "engine": 1.50,
+    "footsteps": 0.50,
+    "washing_machine": 0.50
   }
 }
 ```
