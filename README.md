@@ -73,36 +73,76 @@ Para rodar este projeto na sua máquina, você precisa ter:
 ---
  
 ## Como Executar
- 
-O `docker-compose.yml` subirá simultaneamente o banco de dados PostgreSQL e a API do FastAPI.
 
-*Certifique-se de que o Docker Desktop esteja aberto e rodando.*
- 
+### Via Docker (Recomendado)
+
+O `docker-compose.yml` subirá simultaneamente o banco de dados PostgreSQL e a API FastAPI.
+
+> **Nota:** Certifique-se de que o **Docker Desktop** esteja aberto e rodando antes de executar os comandos.
+
 **1. Configurar Variáveis de Ambiente**
- 
-Crie um arquivo `.env` na raiz do projeto (use o `.env.example` como base) com as credenciais do banco:
- 
+
+Crie um arquivo `.env` na raiz do projeto (utilize o `.env.example` como base) com as credenciais do banco:
+
 ```env
 POSTGRES_USER=audio_admin
 POSTGRES_PASSWORD=secure_password_98765
 POSTGRES_DB=audio_classifier_db
-DATABASE_URL=postgresql://audio_admin:secure_password_98765@postgres-db:5432/audio_classifier_db
+DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
 ```
- 
+
 **2. Levantar a Aplicação**
- 
+
 No terminal, execute:
- 
+
 ```bash
 docker-compose up -d --build
 ```
- 
+
 **3. Acessar a API**
- 
+
 - **Documentação Swagger UI:** [http://localhost:8080/docs](http://localhost:8080/docs)
-- A API tentará carregar automaticamente os pesos do modelo (`trained_model_params.npz`). Se o arquivo não existir, será necessário rodar o script de treinamento primeiro.
+- A API tentará carregar automaticamente os pesos salvos do modelo localizados em `artifacts/trained_model_params.npz`. Se o arquivo não existir, execute o script de treinamento primeiro.
+
 ---
- 
+
+### Execução Local (Ambiente de Desenvolvimento)
+
+Caso queira rodar o projeto diretamente na sua máquina local sem o Docker:
+
+**1. Criar e ativar o ambiente virtual:**
+
+```bash
+# Linux / macOS
+python -m venv venv
+source venv/bin/activate
+
+# Windows (PowerShell)
+python -m venv venv
+.\venv\Scripts\activate
+```
+
+**2. Instalar as dependências de desenvolvimento:**
+
+```bash
+pip install -r requirements/dev.txt
+```
+
+**3. Iniciar o servidor de desenvolvimento com Uvicorn:**
+
+```bash
+uvicorn api.main:app --reload --port 8080
+```
+
+---
+
+**4. Acessar a API:**
+
+- **Documentação Swagger UI:** [http://localhost:8080/docs](http://localhost:8080/docs)
+- A API tentará carregar automaticamente os pesos salvos do modelo localizados em `artifacts/trained_model_params.npz`. Se o arquivo não existir, execute o script de treinamento primeiro.
+
+---
+
 ## Treinando o Modelo
  
 Caso queira treinar o modelo para outras classes ou fazer modificações, siga os seguintes passos:
