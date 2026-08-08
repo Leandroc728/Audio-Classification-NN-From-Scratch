@@ -75,6 +75,7 @@ Para rodar este projeto na sua máquina, você precisa ter:
 ## Como Executar
  
 O `docker-compose.yml` subirá simultaneamente o banco de dados PostgreSQL e a API do FastAPI.
+
 *Certifique-se de que o Docker Desktop esteja aberto e rodando.*
  
 **1. Configurar Variáveis de Ambiente**
